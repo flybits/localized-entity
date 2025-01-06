@@ -1,5 +1,5 @@
 {
-  "name": "localized",
+  "name": "localized-entity",
   "version": "1.0.0",
   "description": "A vanilla JS middleware used to abstract away the bidirectional data-binding of localized object model attributes.",
   "main": "src/index.js",

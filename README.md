@@ -1,4 +1,4 @@
-# localized
+# localized-entity
 
 A vanilla JS middleware used to abstract away the bidirectional data-binding of localized object model attributes.
 
@@ -55,7 +55,7 @@ As an example, if the JSON of your entity from the server looked like the below:
 }
 ```
 
-In order to simplify object model usage within the lower view-model layers of your application downstream of your data layer, **Localized** will allow you to have an object model that resembles:
+In order to simplify object model usage within the lower view-model layers of your application downstream of your data layer, **localized-entity** will allow you to have an object model that resembles:
 
 ```json
 {
@@ -138,6 +138,6 @@ const serverPayload = entity.toJSON();
 
 ## How It Works
 
-Similar to the underlying implementation of the [Vue.js v3 reactivity system](https://vuejs.org/guide/essentials/reactivity-fundamentals.html#reactive-proxy-vs-original), **Localized** leverages the native [JavaScript Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) to observe changes and update encapsulated localized versions of attribute values.
+Similar to the underlying implementation of the [Vue.js v3 reactivity system](https://vuejs.org/guide/essentials/reactivity-fundamentals.html#reactive-proxy-vs-original), **localized-entity** leverages the native [JavaScript Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) to observe changes and update encapsulated localized versions of attribute values.
 
 ![Localized attribute value proxy structure](https://flybits.app/resources/localized-proxy.png)
