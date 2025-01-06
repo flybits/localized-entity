@@ -9,11 +9,11 @@ A vanilla JS middleware used to abstract away the bidirectional data-binding of 
 1. Import
 
 ```shell
-$ npm install localized --save
+$ npm install localized-entity --save
 ```
 
 ```javascript
-import { LocalizedModel } from 'localized';
+import { LocalizedModel } from 'localized-entity';
 ```
 
 2. Extend Class Definition
