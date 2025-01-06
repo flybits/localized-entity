@@ -1,0 +1,169 @@
+
+html,body{
+  margin: 0;
+  padding: 0;
+}
+
+.form-group {
+  margin-bottom: 32px;
+}
+.form-group .form-label {
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+.form-group .form-label.required:after {
+  content: '*';
+  display: inline-block;
+  color: #B32013;
+}
+.form-group input.form-value, .form-group textarea.form-value, .form-group select.form-value {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 8px 12px 8px 12px;
+  border: none;
+  border-bottom: 1px solid #ABB1BC;
+  background-color: #F2F3F5;
+  font-size: 14px;
+  vertical-align: middle;
+  outline: none;
+  transition: border-bottom 0.2s ease;
+}
+.form-group input.form-value:focus, .form-group textarea.form-value:focus, .form-group select.form-value:focus {
+  border-bottom: 1px solid #0851DF;
+}
+.form-group .form-value {
+  position: relative;
+}
+.form-group .form-value .image-field {
+  display: inline-block;
+}
+.form-group .form-value .rtf-editor .ql-toolbar {
+  border: none;
+  padding: 0 10px 2px 0;
+}
+.form-group .form-value .rtf-editor .ql-container {
+  padding: 8px 12px 8px 12px;
+  border: none;
+  border-bottom: 1px solid #ABB1BC;
+  background-color: #F2F3F5;
+  font-size: 14px;
+  vertical-align: middle;
+}
+.form-group .form-value .rtf-editor .ql-container .ql-editor {
+  padding: 0;
+  min-height: 60px;
+}
+.form-group .form-value .rtf-editor .ql-container .ql-editor:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 0;
+  transition: height 0.1s ease;
+  background-color: #0851DF;
+}
+.form-group .form-value .rtf-editor .ql-container .ql-editor:focus:after {
+  height: 1px;
+}
+.form-group .form-value .rtf-editor .clear-all {
+  height: 36px;
+  line-height: 36px;
+}
+.form-group .form-value .rtf-editor.rtl .ql-editor {
+  padding-right: 15px;
+}
+.form-group .form-value .rtf-editor.textfield .ql-container .ql-editor {
+  min-height: auto;
+}
+.form-group .form-value .datetime-picker input {
+  border-radius: 0;
+}
+.form-group .form-value input, .form-group .form-value textarea, .form-group .form-value select {
+  box-sizing: border-box;
+  max-width: 100%;
+  height: auto;
+  line-height: normal;
+  padding: 8px 12px 8px 12px;
+  border: none;
+  border-bottom: 1px solid #ABB1BC;
+  background-color: #F2F3F5;
+  font-size: 14px;
+  vertical-align: middle;
+  outline: none;
+  transition: border-bottom 0.2s ease;
+}
+.form-group .form-value input:focus, .form-group .form-value textarea:focus, .form-group .form-value select:focus {
+  border-bottom: 1px solid #0851DF;
+}
+.form-group .form-value input.inline-val, .form-group .form-value textarea.inline-val, .form-group .form-value select.inline-val {
+  display: inline-block;
+  vertical-align: middle;
+}
+.form-group .form-value select {
+  cursor: pointer;
+}
+.form-group .form-value .select-group {
+  position: relative;
+  display: inline-block;
+  margin-left: 10px;
+}
+.form-group .form-value .select-group select {
+  padding-right: 25px;
+}
+.form-group .form-value .select-group .select-expand-icon {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding-right: 20px;
+  padding-top: 8px;
+  pointer-events: none;
+  font-size: 20px;
+  background-color: #F2F3F5;
+  z-index: 2;
+}
+.form-group .form-descriptor {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #37425E;
+}
+.form-group .form-descriptor .error {
+  color: #b30000;
+}
+.form-group textarea {
+  min-width: 100%;
+  max-width: 100%;
+}
+
+.container{
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue';
+  padding: 40px;
+  .lang-picker{
+    text-align: center;
+    margin-bottom: 50px;
+    .lang{
+      display: inline-block;
+      width: 200px;
+      border: 1px solid gray;
+      cursor: pointer;
+      user-select: none;
+      line-height: 30px;
+    }
+    .lang.selected{
+      background-color: #3258E9;
+      color: white;
+    }
+  }
+  .editing-form,.server-preview{
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .server-preview{
+    .inner{
+      background-color: whitesmoke;
+      padding: 10px;
+    }
+  }
+}

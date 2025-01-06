@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Localized: Basic Example</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="base.css">
+</head>
+<body>
+  <div class="container"></div>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script type="module">
+    /**** Data Layer ****/
+
+    import { LocalizedModel } from '../src/index.js';
+    // Application Object Model Definition
+    // extend LocalizedModel
+    class AppObject extends LocalizedModel{
+      constructor(){
+        super();
+        this.header = '';
+        this.description = '';
+        
+        // return localized object proxy
+        return this._localizedProxy;
+      }
+      fromJSON(obj){
+        // initialize model attributes based on localized values
+        this.initLocalizedValue('header', obj.localizations);
+        this.initLocalizedValue('description', obj.localizations);
+
+        return this;
+      }
+      toJSON(){
+        // transform back to server JSON object structure
+        return {
+          localizations: this.inflateLocales({
+            header: 'header',
+            description: 'description'
+          })
+        }
+      }
+    }
+    
+    /**** API Wrapper ****/
+
+    const serverJSON = {
+      "localizations": {
+        "en": {
+          "header": "this is a header",
+          "description": "this is a description"
+        },
+        "fr": {
+          "header": "il s’agit d’un en-tête",
+          "description": "il s’agit d’une description"
+        }
+      }
+    };
+    window.API = {
+      getEntity(){
+        return new AppObject().fromJSON(serverJSON);
+      }
+    }
+  </script>
+  <script type="module">
+    /**** View-Model Layer ****/
+
+    const { createApp } = window.Vue;
+    window.App = createApp({
+      template: `
+        <div class="lang-picker">
+          <div class="lang" :class="[selectedLang === lang.key?'selected':'']" v-for="lang in availableLangs" @click="switchLang(lang.key)">{{ lang.label }}</div>
+        </div>
+        <div class="editing-form" v-if="appObj">
+          <div class="form-group">
+            <div class="form-label">Header</div>
+            <input class="form-value" type="text" v-model="appObj.header"/>
+          </div>
+          <div class="form-group">
+            <div class="form-label">Description</div>
+            <textarea class="form-value" type="text" v-model="appObj.description"></textarea>
+          </div>
+        </div>
+        <div class="server-preview form-group" v-if="serverJSONPreview">
+          <div class="form-label">Server Payload Preview</div>
+          <pre class="inner">{{ serverJSONPreview }}</pre>
+        </div>
+      `,
+      data(){
+        return {
+          appObj: null,
+          serverJSONPreview: '',
+          selectedLang: 'en',
+          availableLangs: [
+            {
+              key: 'en',
+              label: 'English'
+            },
+            {
+              key: 'fr',
+              label: 'French'
+            }
+          ]
+        }
+      },
+      watch: {
+        appObj: {
+          handler(){
+            this.serverJSONPreview = JSON.stringify(this.appObj.toJSON(), null, 2);
+          },
+          deep: true
+        }
+      },
+      methods: {
+        switchLang(langKey){
+          this.selectedLang = langKey;
+          this.appObj.localize(langKey);
+        }
+      },
+      mounted(){
+        this.appObj = window.API.getEntity();
+      }
+    }).mount('.container')
+  </script>
+</body>
+</html>
