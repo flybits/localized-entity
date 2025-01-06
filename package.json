@@ -1,0 +1,12 @@
+{
+  "name": "localized",
+  "version": "1.0.0",
+  "description": "A vanilla JS middleware used to abstract away the bidirectional data-binding of localized object model attributes.",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Justin Lam",
+  "license": "Apache-2.0"
+}
