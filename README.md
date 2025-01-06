@@ -2,6 +2,8 @@
 
 A vanilla JS middleware used to abstract away the bidirectional data-binding of localized object model attributes.
 
+[Live Demo](https://localized.flybits.app/examples/example-basic.html)
+
 ## Getting Started
 
 1. Import
