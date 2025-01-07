@@ -116,6 +116,9 @@ class LocalizedModel{
             if(!model._strMap[`${resolvedArrKey}.${attrKey}`]){
               model._strMap[`${resolvedArrKey}.${attrKey}`] = {};
             }
+            if(newVal[attrKey]){
+              model._setLocalizedValue(`${resolvedArrKey}.${attrKey}`, newVal[attrKey]);
+            }
           });
           return true;
         }
