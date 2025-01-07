@@ -41,7 +41,7 @@ class AppObject extends LocalizedModel{
 3. Use to simplify read/update
 
 ```javascript
-let appObj = new AppObject().from(serverJSON);
+let appObj = new AppObject().fromJSON(serverJSON);
 // Read the English value of attrValue
 console.log(appObj.attrValue);
 // Update the English value
