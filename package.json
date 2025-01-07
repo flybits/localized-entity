@@ -1,6 +1,6 @@
 {
   "name": "localized-entity",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A vanilla JS middleware used to abstract away the bidirectional data-binding of localized object model attributes.",
   "main": "src/index.js",
   "type": "module",
@@ -11,6 +11,10 @@
   },
   "author": "Justin Lam",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/flybits/localized-entity.git"
+  },
   "devDependencies": {
     "@vitest/coverage-v8": "^2.1.8",
     "browser-sync": "^3.0.3",
