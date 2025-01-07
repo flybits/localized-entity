@@ -107,7 +107,6 @@ test('Removing object', () => {
   expect(serverPayload?.objArray?.length).toBe(0);
 });
 
-/*
 test('Adding array object with new attributes', () => {
   let appObj = new AppObject().fromJSON(serverJSON);
   appObj.items.push({
@@ -117,10 +116,8 @@ test('Adding array object with new attributes', () => {
   });
   
   let serverPayload = appObj.toJSON();
-  console.log('wtf', JSON.stringify(serverPayload, null, 2));
   expect(serverPayload?.objArray?.[1]).toBeTruthy();
   expect(serverPayload?.objArray?.[1]?.localizations?.en?.header).toBe('new english header');
   expect(serverPayload?.objArray?.[1]?.localizations?.en?.description).toBe('new english description');
   expect(serverPayload?.objArray?.[1]?.localizations?.en?.subHeader).toBe('new english title');
 })
-*/
