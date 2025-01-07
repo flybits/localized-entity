@@ -84,3 +84,43 @@ test('Update respective proxied locale values', () => {
   expect(serverPayload?.objArray?.[0]?.localizations?.en?.header).toBe('englishtest');
   expect(serverPayload?.objArray?.[0]?.localizations?.fr?.header).toBe('frenchtest');
 })
+
+test('Adding array object then editing attributes', () => {
+  let appObj = new AppObject().fromJSON(serverJSON);
+  appObj.items.push({});
+  appObj.items[1].header = 'new english header';
+  appObj.items[1].description = 'new english description';
+  appObj.items[1].title = 'new english title';
+  
+  let serverPayload = appObj.toJSON();
+  expect(serverPayload?.objArray?.[1]).toBeTruthy();
+  expect(serverPayload?.objArray?.[1]?.localizations?.en?.header).toBe('new english header');
+  expect(serverPayload?.objArray?.[1]?.localizations?.en?.description).toBe('new english description');
+  expect(serverPayload?.objArray?.[1]?.localizations?.en?.subHeader).toBe('new english title');
+})
+
+test('Removing object', () => {
+  let appObj = new AppObject().fromJSON(serverJSON);
+  appObj.items.pop();
+  
+  let serverPayload = appObj.toJSON();
+  expect(serverPayload?.objArray?.length).toBe(0);
+});
+
+/*
+test('Adding array object with new attributes', () => {
+  let appObj = new AppObject().fromJSON(serverJSON);
+  appObj.items.push({
+    header: 'new english header',
+    description: 'new english description',
+    title: 'new english title'
+  });
+  
+  let serverPayload = appObj.toJSON();
+  console.log('wtf', JSON.stringify(serverPayload, null, 2));
+  expect(serverPayload?.objArray?.[1]).toBeTruthy();
+  expect(serverPayload?.objArray?.[1]?.localizations?.en?.header).toBe('new english header');
+  expect(serverPayload?.objArray?.[1]?.localizations?.en?.description).toBe('new english description');
+  expect(serverPayload?.objArray?.[1]?.localizations?.en?.subHeader).toBe('new english title');
+})
+*/

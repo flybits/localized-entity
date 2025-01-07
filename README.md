@@ -16,12 +16,44 @@ $ npm install localized-entity --save
 import { LocalizedModel } from 'localized-entity';
 ```
 
-2. Extend Class Definition
+2. Extend class definition
 
 ```javascript
 class AppObject extends LocalizedModel{
-  // ...
+  constructor(){
+    super();
+    this.attrValue = '';
+  }
+  fromJSON(obj){
+    this.initLocalizedValue('attrValue', obj.localeValues, 'localizedAttr')
+    return this;
+  }
+  toJSON(){
+    return {
+      localeValues: this.inflateLocales({
+        attrValue: 'localizedAttr'
+      })
+    }
+  }
 }
+```
+
+3. Use to simplify read/update
+
+```javascript
+let appObj = new AppObject().from(serverJSON);
+// Read the English value of attrValue
+console.log(appObj.attrValue);
+// Update the English value
+appObj.attrValue = 'english value update';
+
+// switch locales
+appObj.localize('fr');
+
+// Read the French value of attrValue
+console.log(appObj.attrValue);
+// Update the French value
+appObj.attrValue = 'mise à jour de la valeur française';
 ```
 
 ## Motivation
@@ -134,6 +166,131 @@ entity.header = `changer l'en-tête français`;
 
 // transform back to server JSON object structure
 const serverPayload = entity.toJSON();
+```
+
+## Nested Objects
+
+If your object model contains a child object with localized attributes simply utilize the `localizeObj` function within your class definition constructor.
+
+Take for example the following JSON structure
+
+```json
+{
+  "subObject": {
+    "localeValues": {
+      "en": {
+        "attr1": "this is a header",
+        "attrName2": "this is a description"
+      },
+      "fr": {
+        "attr1": "il s’agit d’un en-tête",
+        "attrName2": "il s’agit d’une description"
+      }
+    }
+  }
+}
+```
+
+Leverage `LocalizedModel` functions to initialize and transform localized values.
+
+```javascript
+class AppObject extends LocalizedModel{
+  constructor(){
+    super();
+    // declare your child object as localized
+    this.child = this.localizeObj('child', {
+      attr1: '',
+      attr2: ''
+    });
+    
+    // return localized object proxy
+    return this._localizedProxy;
+  }
+  fromJSON(obj){
+    // initialize model attributes based on localized values
+    this.initLocalizedValue('child.attr1', obj.subObject.localeValues);
+    // normalize incoming `attrName2` attribute key into `attr2` for consistency
+    this.initLocalizedValue('child.attr2', obj.subObject.localeValues, 'attrName2');
+
+    return this;
+  }
+  toJSON(){
+    // transform back to server JSON object structure
+    return {
+      subObject: {
+        localeValues: this.inflateLocales({
+          'child.attr1': 'attr1',
+          'child.attr2': 'attrName2'
+        })
+      }
+    }
+  }
+}
+```
+
+## Object Arrays
+
+If your object model contains an object array where each object contains localized attributes simply utilize the `localizeArray` function within your class definition constructor.
+
+Take for example the following JSON structure
+
+```json
+{
+  "subArray": [
+    {
+      "localeValues": {
+        "en": {
+          "attr1": "this is a header",
+          "attrName2": "this is a description"
+        },
+        "fr": {
+          "attr1": "il s’agit d’un en-tête",
+          "attrName2": "il s’agit d’une description"
+        }
+      }
+    }
+  ]
+}
+```
+
+Leverage `LocalizedModel` functions to initialize and transform localized values.
+
+```javascript
+class AppObject extends LocalizedModel{
+  constructor(){
+    super();
+    // declare your child object array as localized
+    this.children = this.localizeArray('children', ['attr1', 'attr2']);
+    
+    // return localized object proxy
+    return this._localizedProxy;
+  }
+  fromJSON(obj){
+    // initialize model attributes based on localized values
+    obj.subArray.forEach((obj, index) => {
+      this.children.push({
+        attr1: this.initLocalizedArrValue('children', index, 'attr1', obj.localeValues),
+        // normalize incoming `attrName2` attribute key into `attr2` for consistency
+        attr2: this.initLocalizedArrValue('children', index, 'attr2', obj.localeValues, 'attrName2')
+      })
+    })
+
+    return this;
+  }
+  toJSON(){
+    // transform back to server JSON object structure
+    return {
+      subArray: this.children.map((obj, index) => {
+        return {
+          localeValues: this.inflateLocales({
+            'children.{index}.attr1': 'attr1',
+            'children.{index}.attr2': 'attrName2'
+          }, index)
+        }
+      })
+    }
+  }
+}
 ```
 
 ## How It Works
