@@ -164,6 +164,7 @@ html,body{
     .inner{
       background-color: whitesmoke;
       padding: 10px;
+      white-space: break-spaces;
     }
   }
 }
