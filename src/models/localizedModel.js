@@ -7,7 +7,10 @@ class LocalizedModel{
     const model = this;
     this._localizedProxy = new Proxy(this, {
       set(target, prop, newVal){
-        const attrMap = model._strMap[prop];
+        var attrMap = model._strMap[prop];
+        if(!attrMap && prop !== '_strMap' && prop !== '_localeKey' && prop !== '_localizedProxy'){
+          attrMap = model._strMap[prop] = {};
+        }
         if(attrMap){
           model._setLocalizedValue(prop, newVal);
         }
@@ -97,7 +100,10 @@ class LocalizedModel{
     return new Proxy(object, {
       set(target, prop, newVal){
         const resolvedAttrKey = `${attrKey}.${prop}`;
-        const attrMap = model._strMap[resolvedAttrKey];
+        var attrMap = model._strMap[resolvedAttrKey];
+        if(!attrMap && prop !== '_strMap' && prop !== '_localeKey' && prop !== '_localizedProxy'){
+          attrMap = model._strMap[resolvedAttrKey] = {};
+        }
         if(attrMap){
           model._setLocalizedValue(resolvedAttrKey, newVal);
         }
