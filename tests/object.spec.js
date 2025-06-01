@@ -92,3 +92,18 @@ test('New instance setting attribute will serialize', () => {
   expect(serverPayload?.secondLevel?.localizations?.en?.header).toBe('first value')
   expect(serverPayload?.secondLevel?.localizations?.fr?.header).toBe('french value')
 })
+
+test('Serialization is symmetrical across locales even for empty values', () => {
+  let appObj = new AppObject();
+  appObj.secondLevelObj.header = 'first value';
+  appObj.localize('fr');
+  appObj.secondLevelObj.header = 'french value';
+  let serverPayload = appObj.toJSON();
+  expect(serverPayload?.secondLevel).toBeInstanceOf(Object)
+  expect(serverPayload?.secondLevel?.localizations?.en?.header).toBe('first value')
+  expect(serverPayload?.secondLevel?.localizations?.en?.subHeader).toBe('');
+  expect(serverPayload?.secondLevel?.localizations?.en?.description).toBe('');
+  expect(serverPayload?.secondLevel?.localizations?.fr?.header).toBe('french value')
+  expect(serverPayload?.secondLevel?.localizations?.fr?.subHeader).toBe('');
+  expect(serverPayload?.secondLevel?.localizations?.fr?.description).toBe('');
+})

@@ -159,6 +159,7 @@ class LocalizedModel{
    */
   inflateLocales(attrKeyMap, arrIndex){
     var localeObj = {};
+    var localeKeysMap = {};
 
     Object.keys(attrKeyMap).forEach((cacheKey) => {
       var resolvedCacheKey = cacheKey;
@@ -168,6 +169,7 @@ class LocalizedModel{
       let attrMap = this._strMap[resolvedCacheKey];
       if(attrMap){
         Object.keys(attrMap).forEach(function(localeKey){
+          localeKeysMap[localeKey] = true;
           const outputKey = attrKeyMap[cacheKey];
           if(!Object.prototype.hasOwnProperty.call(localeObj, localeKey)){
             localeObj[localeKey] = {};
@@ -175,6 +177,17 @@ class LocalizedModel{
           localeObj[localeKey][outputKey] = attrMap[localeKey] || '';
         })
       }
+    })
+
+    Object.keys(localeKeysMap).forEach(function(localeKey){
+      let localeMap = localeObj[localeKey]
+      
+      Object.keys(attrKeyMap).forEach((cacheKey) => {
+        const outputKey = attrKeyMap[cacheKey];
+        if(!Object.prototype.hasOwnProperty.call(localeMap, outputKey)){
+          localeMap[outputKey] = '';
+        }
+      })
     })
 
     return localeObj;
