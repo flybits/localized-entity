@@ -7,7 +7,10 @@ class LocalizedModel{
     const model = this;
     this._localizedProxy = new Proxy(this, {
       set(target, prop, newVal){
-        const attrMap = model._strMap[prop];
+        var attrMap = model._strMap[prop];
+        if(!attrMap && prop !== '_strMap' && prop !== '_localeKey' && prop !== '_localizedProxy'){
+          attrMap = model._strMap[prop] = {};
+        }
         if(attrMap){
           model._setLocalizedValue(prop, newVal);
         }
@@ -97,7 +100,10 @@ class LocalizedModel{
     return new Proxy(object, {
       set(target, prop, newVal){
         const resolvedAttrKey = `${attrKey}.${prop}`;
-        const attrMap = model._strMap[resolvedAttrKey];
+        var attrMap = model._strMap[resolvedAttrKey];
+        if(!attrMap && prop !== '_strMap' && prop !== '_localeKey' && prop !== '_localizedProxy'){
+          attrMap = model._strMap[resolvedAttrKey] = {};
+        }
         if(attrMap){
           model._setLocalizedValue(resolvedAttrKey, newVal);
         }
@@ -153,6 +159,7 @@ class LocalizedModel{
    */
   inflateLocales(attrKeyMap, arrIndex){
     var localeObj = {};
+    var localeKeysMap = {};
 
     Object.keys(attrKeyMap).forEach((cacheKey) => {
       var resolvedCacheKey = cacheKey;
@@ -162,6 +169,7 @@ class LocalizedModel{
       let attrMap = this._strMap[resolvedCacheKey];
       if(attrMap){
         Object.keys(attrMap).forEach(function(localeKey){
+          localeKeysMap[localeKey] = true;
           const outputKey = attrKeyMap[cacheKey];
           if(!Object.prototype.hasOwnProperty.call(localeObj, localeKey)){
             localeObj[localeKey] = {};
@@ -169,6 +177,17 @@ class LocalizedModel{
           localeObj[localeKey][outputKey] = attrMap[localeKey] || '';
         })
       }
+    })
+
+    Object.keys(localeKeysMap).forEach(function(localeKey){
+      let localeMap = localeObj[localeKey]
+      
+      Object.keys(attrKeyMap).forEach((cacheKey) => {
+        const outputKey = attrKeyMap[cacheKey];
+        if(!Object.prototype.hasOwnProperty.call(localeMap, outputKey)){
+          localeMap[outputKey] = '';
+        }
+      })
     })
 
     return localeObj;
